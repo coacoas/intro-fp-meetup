@@ -1,0 +1,257 @@
+#+OPTIONS: num:nil toc:nil reveal_title_slide:nil
+#+REVEAL_TRANS: slide
+#+REVEAL_THEME: sky
+#+REVEAL_PLUGINS: (highlight notes)
+#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.8.0/
+#+Title: Introduction to Functional Programming
+#+Author: Bill Carlson
+#+Email: bill@coacoas.net
+
+* Introduction to Functional Programming
+
+* Inspiration
+I've stolen this flow before, and I'll do it again
+
+[[https://www.youtube.com/watch?v=aAtPi23nLcw][Runar Bjarnasson - Introduction to Functional Programming]]
+
+* Who am I? 
+   * Bill Carlson
+   * Senior Software Engineer @Banno
+   * I get paid to write purely functional programs
+#+begin_notes
+...and I have been paid to do this for a few years now!
+#+end_notes
+
+* What is Functional Programming? 
+#+ATTR_REVEAL: :frag t
+Programming with functions
+
+** What is a function?
+#+ATTR_REVEAL: :frag t
+A function ~f :: A -> B~ maps *any* value from A to *exactly one* value in B
+
+#+ATTR_REVEAL: :frag t
+/And nothing else/
+
+** What does that mean? 
+
+#+ATTR_REVEAL: :frag t 
+ * *Totality*: A function will return a single value for all values of ~A~.
+ * *Determinism*: Every time you call a function with the same arguments, you will /always/ get the same result.
+ * *Purity*: The output of the function is the /only/ effect.
+
+
+** What does /that/ mean?
+A function can not:
+- Read/Write to disk
+- Print to the console
+- Query a database
+- Throw an exception
+- Check the system clock
+- etc.
+#+ATTR_REVEAL: :frag t
+We'll get to that later...
+
+** Referential Tranparency
+You can replace all occurrences of an expression with the result of that call without changing the program.
+
+A function ~f(a)~ is pure if it is referentially transparent for all referentially transparent values of ~a~
+
+*** Example
+#+BEGIN_SRC scala
+val string = "some text"
+val e1 = string.reverse
+val e2 = string.reverse
+val e3 = e1 + e2
+#+END_SRC
+
+#+ATTR_REVEAL: :frag t
+#+BEGIN_SRC scala
+val buffer = new StringBuilder("some text")
+val n1 = buffer.reverse
+val n2 = buffer.reverse
+val n3 = n1.append(n2)
+#+END_SRC
+
+*** Referential Transparency
+
+A functional program is not a set of instructions for the computer. 
+
+It is a single referentially transparent expression.
+
+Running a program is just a series of reductions to a single value.
+
+
+* Live Coding
+
+** Haskell
+
+*** Function calls
+#+begin_src haskell
+-- type declaration
+inc :: Int -> Int
+^      ^      ^
+name   param  return    
+
+-- expression declaration
+inc   x   =   x + 1
+^     ^       ^
+name  param   expression (implicit return)
+
+#+end_src
+
+*** Lambdas
+#+begin_src haskell
+inc :: Int -> Int
+
+inc = \x -> x + 1
+#+end_src
+
+
+** Higher-order functions
+
+- Functions are values
+- Values can be passed to or returned from functions
+- Ergo, functions can accept and return functions
+
+#+ATTR_REVEAL: :frag t
+Let's try it out!
+#+begin_notes
+
+#+end_notes
+
+** Recursion 
+
+*** Loops
+
+- Traditional (C-Style) loops are not allowed.
+  - Variable modification is not allowed.
+
+So how can we loop? 
+#+begin_notes
+npower :: Integer -> Integer -> Integer
+power n k =
+  if (k <= 0)
+  then 1
+  else n * power n (k - 1)
+#+end_notes
+
+*** Tail Recursion
+
+- Primary problem with recursion - stack overflow!
+- How do we avoid blowing the stack? 
+#+begin_notes
+power' :: Integer -> Integer -> Integer
+power' n k = go 1 k
+  where go :: Integer -> Integer -> Integer
+        go accum pow =
+          if (pow <= 0)
+          then accum
+          else go (n * accum) (pow - 1)
+
+#+end_notes
+
+** Data Structures
+
+*** List
+
+#+begin_src haskell
+data List a = Nil | Cons a (List a)
+#+end_src
+
+#+ATTR_REVEAL: :frag t
+#+begin_src haskell
+data [a] = [] | a : [a]
+#+end_src
+
+*** List
+
+- Build a large list by prepending to a smaller list
+#+begin_src haskell
+small_list = [4, 3, 2, 1]
+bigger_list = 8 : 7 : 6 : 5 : small_list
+#+end_src
+- This does not change the value of ~small_list~
+- This /shares/ the space used by ~small_list~ 
+
+*** Reduction
+
+- Building lists is all well and good, but how can we get an actual value out of it? 
+- Let's look at summing a list of ~Integer~ values
+- MORE CODE!!
+
+#+begin_notes
+sumright :: [Integer] -> Integer
+sumright [] = 0
+sumright (x:xs) = x + sumright xs
+
+sumleft :: [Integer] -> Integer
+sumleft xs = go xs 0
+  where
+    go :: [Integer] -> Integer -> Integer
+    go [] accum = accum
+    go (x:xs) accum = go xs (x + accum)
+
+productright :: [Integer] -> Integer
+productright [] = 1
+productright (x:xs) = x * productright xs
+
+foldright :: (a -> b -> b)
+       -> b
+       -> [a]
+       -> b
+foldright _ z []     = z
+foldright f z (x:xs) = f x (foldright f z xs)
+
+foldleft :: (b -> a -> b)
+       -> b
+       -> [a]
+       -> b
+foldleft f z xs = go xs z
+  where go [] accum = accum
+        go (y: ys) accum = go ys (f accum y)
+
+sumright' :: [Integer] -> Integer
+sumright' = foldright (+) 0
+
+productright' = foldright (*) 1
+
+reverse :: [a] -> [a]
+reverse = foldleft (flip (:)) []
+-- :t (:)       :: a -> [a] -> [a]
+-- :t flip (:)  :: [a] -> a -> [a]
+#+end_notes
+
+** Error Handling
+
+*** Maybe
+
+~data Maybe a = Nothing | Just a~
+
+#+begin_notes
+headsafe :: [a] -> Maybe a
+headsafe [] = Nothing
+headsafe (x:xs) = Just x
+
+foldMaybe :: b -> (a -> b) -> Maybe a -> b
+foldMaybe z _ Nothing  = z
+foldMaybe _ f (Just a) = f a
+#+end_notes
+
+*** Either
+
+~data Either a b = Left a | Right b~
+
+#+begin_notes
+headsafe' :: [a] -> Either String a
+headsafe' [] = Left "Can't take head of an empty list"
+headsafe' (x:xs) = Right x
+
+foldEither :: (b -> c) -> (a -> c) -> Either a b -> c
+foldEither l _ (Left b)  = l b
+foldEither _ f (Right a) = f a
+#+end_notes
+
+** Effects
+
+Not going to go too far into this one... 
