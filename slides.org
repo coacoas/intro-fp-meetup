@@ -161,10 +161,10 @@ divisibleBy' k = \n -> mod n k == 0
 -- divisibleBy'' k = (== 0) . flip (mod)
 
 even' = divisibleBy 2
-
--- Function composition
+-- Function composition: (f ∘ g)(x) == f(g(x))
+-- f :: b -> c ; g :: a -> b ; (f ∘ g) :: a -> c
 -- :t (.)
-odd = not . even'
+odd   = not . even'
 #+END_NOTEs
 
 *** Higher-order functions
@@ -224,40 +224,69 @@ bigger_list = 8 : 7 : 6 : 5 : small_list
 - MORE CODE!!
 
 #+BEGIN_NOTES
-sumright :: [Integer] -> Integer
-sumright [] = 0
-sumright (x:xs) = x + sumright xs
+--
+-- Lists
+-- 
+sum :: [Integer] -> Integer
+sum [] = 0
+sum (x:xs) = x + sum xs
 
-sumleft :: [Integer] -> Integer
-sumleft xs = go xs 0
+product :: [Integer] -> Integer
+product [] = 1
+product (x:xs) = x * product xs
+
+foldright :: (a -> b -> b)
+          -> b
+          -> [a]
+          -> b
+foldright _ z []     = z
+foldright f z (x:xs) = f x (foldright f z xs)
+
+sumr' :: [Integer] -> Integer
+sumr' = foldright (+) 0
+
+-- foldright (+) 0 [1, 2, 3, 4]
+-- 1 + (foldright (+) [2, 3, 4])
+-- 1 + 2 + (foldright (+) [3, 4])
+-- 1 + 2 + 3 + (foldright (+) [4])
+-- 1 + 2 + 3 + 4 + (foldright (+) [])
+-- 1 + 2 + 3 + 4 + 0
+-- 1 + 2 + 3 + 4
+-- 1 + 2 + 3
+-- 1 + 2
+-- 1
+
+-- (1 + (2 + (3 + (4 + 0))))
+
+product' :: [Integer] -> Integer
+product' = foldright (*) 1
+
+suml :: [Integer] -> Integer
+suml xs = go xs 0
   where
     go :: [Integer] -> Integer -> Integer
     go [] accum = accum
     go (x:xs) accum = go xs (x + accum)
 
-productright :: [Integer] -> Integer
-productright [] = 1
-productright (x:xs) = x * productright xs
-
-foldright :: (a -> b -> b)
-       -> b
-       -> [a]
-       -> b
-foldright _ z []     = z
-foldright f z (x:xs) = f x (foldright f z xs)
-
 foldleft :: (b -> a -> b)
-       -> b
-       -> [a]
-       -> b
+         -> b
+         -> [a]
+         -> b
 foldleft f z xs = go xs z
   where go [] accum = accum
-        go (y: ys) accum = go ys (f accum y)
+        go (y:ys) accum = go ys (f accum y)
 
-sumright' :: [Integer] -> Integer
-sumright' = foldright (+) 0
 
-productright' = foldright (*) 1
+-- foldleft (+) 0 [1, 2, 3, 4]
+-- go [1, 2, 3, 4] 0
+-- go [2, 3, 4] 1
+-- go [3, 4] 3
+-- go [4] 6
+-- go [] 10
+-- 10
+
+-- ((((0 + 1) + 2) + 3) + 4)
+
 
 reverse :: [a] -> [a]
 reverse = foldleft (flip (:)) []
@@ -290,9 +319,9 @@ headsafe' :: [a] -> Either String a
 headsafe' [] = Left "Can't take head of an empty list"
 headsafe' (x:xs) = Right x
 
-foldEither :: (b -> c) -> (a -> c) -> Either a b -> c
-foldEither l _ (Left b)  = l b
-foldEither _ f (Right a) = f a
+foldEither :: (a -> c) -> (b -> c) -> Either a b -> c
+foldEither l _ (Left a)  = l a
+foldEither _ f (Right b) = f b
 #+END_NOTES
 
 * Effects
