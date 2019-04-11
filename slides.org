@@ -161,10 +161,10 @@ divisibleBy' k = \n -> mod n k == 0
 -- divisibleBy'' k = (== 0) . flip (mod)
 
 even' = divisibleBy 2
-
--- Function composition
+-- Function composition: (f ∘ g)(x) == f(g(x))
+-- f :: b -> c ; g :: a -> b ; (f ∘ g) :: a -> c
 -- :t (.)
-odd = not . even'
+odd   = not . even'
 #+END_NOTEs
 
 *** Higher-order functions
