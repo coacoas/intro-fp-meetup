@@ -10,14 +10,14 @@
 * Introduction to Functional Programming
 
 * Inspiration
-I've stolen this flow before, and I'll do it again
+I've stolen this presentation before, and I'll do it again
 
 [[https://www.youtube.com/watch?v=aAtPi23nLcw][Runar Bjarnasson - Introduction to Functional Programming]]
 
 * Who am I? 
-   * Bill Carlson
-   * Senior Software Engineer @Banno
-   * I get paid to write purely functional programs
+- Bill Carlson
+- Senior Software Engineer @ Banno
+- I get paid to write purely functional programs
 #+BEGIN_NOTES
 for a few years now!
 #+END_NOTES
@@ -167,7 +167,7 @@ even' = divisibleBy 2
 odd = not . even'
 #+END_NOTEs
 
-** Higher-order functions
+*** Higher-order functions
 
 - Functions are values
 - Values can be passed to or returned from functions
@@ -194,8 +194,7 @@ or' = lift (||)
 
 #+END_NOTES
 
-
-** Data Structures
+* Data Structures
 
 *** List
 
@@ -266,7 +265,7 @@ reverse = foldleft (flip (:)) []
 -- :t flip (:)  :: [a] -> a -> [a]
 #+END_NOTES
 
-** Error Handling
+* Error Handling
 
 *** Maybe
 
@@ -296,7 +295,7 @@ foldEither l _ (Left b)  = l b
 foldEither _ f (Right a) = f a
 #+END_NOTES
 
-** Effects
+* Effects
 
 - Rather than executing the effects, create a data structure that
   defines /how/ to execute the effects.
@@ -307,8 +306,16 @@ foldEither _ f (Right a) = f a
 #+ATTR_REVEAL: :frag t
 Maybe next time
 
+* Summary
+- A program is a referentially transparent expression
+  - Provides testability and safety
+- Build data structures to transform data
+- Interpret data structures using fold, or some derivative
+- Run effects at the end of the world
+
 * Resources
 - Haskell Programming from First Principles :: http://haskellbook.com
 - Functional Programming in Scala :: https://www.manning.com/books/functional-programming-in-scala
 
 * ?
+* Thank you
