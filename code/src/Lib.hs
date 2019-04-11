@@ -23,3 +23,22 @@ even' = divisibleBy 2
 -- f :: b -> c ; g :: a -> b ; (f ∘ g) :: a -> c
 odd   = not . even
 
+-- Lifting
+type Pred a = a -> Bool
+
+and :: Pred a -> Pred a -> Pred a
+and p1 p2 = \a -> (p1 a) && (p2 a)
+or :: Pred a -> Pred a -> Pred a
+or p1 p2 = \a -> (p1 a) || (p2 a)
+
+-- Too much duplication... copy/paste is not your friend
+lift :: (Bool -> Bool -> Bool)
+     -> Pred a
+     -> Pred a
+     -> Pred a
+lift f p1 p2 = \a -> f (p1 a) (p2 a)
+
+and' :: Pred a -> Pred a -> Pred a
+and' = lift (&&)
+or'  :: Pred a -> Pred a -> Pred a
+or'  = lift (||)
