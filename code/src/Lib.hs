@@ -17,15 +17,15 @@ even n = mod n 2 == 0
 
 divisibleBy :: Integer -> Integer -> Bool
 divisibleBy k n = n `mod` k == 0
-  
+
 even' = divisibleBy 2
 -- Function composition: (f ∘ g)(x) == f(g(x))
 -- f :: b -> c ; g :: a -> b ; (f ∘ g) :: a -> c
 odd   = not . even
 
--- 
+--
 -- Higher-kinded functions (lifting)
--- 
+--
 type Pred a = a -> Bool
 
 and :: Pred a -> Pred a -> Pred a
@@ -47,7 +47,7 @@ or'  = lift (||)
 
 --
 -- Lists
--- 
+--
 sum :: [Integer] -> Integer
 sum [] = 0
 sum (x:xs) = x + sum xs
@@ -113,3 +113,27 @@ reverse :: [a] -> [a]
 reverse = foldleft (flip (:)) []
 -- :t (:)       :: a -> [a] -> [a]
 -- :t flip (:)  :: [a] -> a -> [a]
+
+--
+-- Maybe
+--
+
+-- head [] throws an error - we can do better
+headsafe :: [a] -> Maybe a
+headsafe [] = Nothing
+headsafe (x:xs) = Just x
+
+foldMaybe :: b -> (a -> b) -> Maybe a -> b
+foldMaybe z _ Nothing  = z
+foldMaybe _ f (Just a) = f a
+
+--
+-- Either
+--
+headsafe' :: [a] -> Either String a
+headsafe' [] = Left "Can't take head of an empty list"
+headsafe' (x:xs) = Right x
+
+foldEither :: (a -> c) -> (b -> c) -> Either a b -> c
+foldEither l _ (Left a)  = l a
+foldEither _ f (Right b) = f b

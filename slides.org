@@ -319,9 +319,9 @@ headsafe' :: [a] -> Either String a
 headsafe' [] = Left "Can't take head of an empty list"
 headsafe' (x:xs) = Right x
 
-foldEither :: (b -> c) -> (a -> c) -> Either a b -> c
-foldEither l _ (Left b)  = l b
-foldEither _ f (Right a) = f a
+foldEither :: (a -> c) -> (b -> c) -> Either a b -> c
+foldEither l _ (Left a)  = l a
+foldEither _ f (Right b) = f b
 #+END_NOTES
 
 * Effects
