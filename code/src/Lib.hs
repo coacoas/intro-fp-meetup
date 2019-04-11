@@ -95,3 +95,7 @@ foldEither :: (a -> c) -> (b -> c) -> Either a b -> c
 foldEither l _ (Left a)  = (l a)
 foldEither _ f (Right b) = (f b)
 
+data Console = Readline | Writeline String
+
+instance Foldable Console where
+  foldr Readline 

@@ -2,11 +2,11 @@ name:                code
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/githubuser/code#readme
+homepage:            https://github.com/coacoas/intro-fp-meetup
 license:             BSD3
 license-file:        LICENSE
-author:              Author name here
-maintainer:          example@example.com
+author:              BIll Carlson
+maintainer:          bill@coacoas.net
 copyright:           2019 Author name here
 category:            Web
 build-type:          Simple

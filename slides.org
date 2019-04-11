@@ -2,7 +2,7 @@
 #+REVEAL_TRANS: slide
 #+REVEAL_THEME: sky
 #+REVEAL_PLUGINS: (highlight notes)
-#+REVEAL_ROOT: http://cdn.jsdelivr.net/reveal.js/3.8.0/
+#+REVEAL_ROOT: https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/
 #+Title: Introduction to Functional Programming
 #+Author: Bill Carlson
 #+Email: bill@coacoas.net
@@ -18,9 +18,9 @@ I've stolen this flow before, and I'll do it again
    * Bill Carlson
    * Senior Software Engineer @Banno
    * I get paid to write purely functional programs
-#+begin_notes
-...and I have been paid to do this for a few years now!
-#+end_notes
+#+BEGIN_NOTES
+for a few years now!
+#+END_NOTES
 
 * What is Functional Programming? 
 #+ATTR_REVEAL: :frag t
@@ -35,10 +35,9 @@ A function ~f :: A -> B~ maps *any* value from A to *exactly one* value in B
 
 ** What does that mean? 
 
-#+ATTR_REVEAL: :frag t 
- * *Totality*: A function will return a single value for all values of ~A~.
- * *Determinism*: Every time you call a function with the same arguments, you will /always/ get the same result.
- * *Purity*: The output of the function is the /only/ effect.
+- Totality :: A function will return a single value for all values of ~A~.
+- Determinism :: Every time you call a function with the same arguments, you will /always/ get the same result.
+- Purity :: The output of the function is the /only/ effect.
 
 
 ** What does /that/ mean?
@@ -49,13 +48,12 @@ A function can not:
 - Throw an exception
 - Check the system clock
 - etc.
-#+ATTR_REVEAL: :frag t
-We'll get to that later...
+
+But we'll touch on that later...
 
 ** Referential Tranparency
-You can replace all occurrences of an expression with the result of that call without changing the program.
-
-A function ~f(a)~ is pure if it is referentially transparent for all referentially transparent values of ~a~
+- You can replace all occurrences of an expression with the result of that call without changing the program.
+- A function ~f(a)~ is pure if it is referentially transparent for all referentially transparent values of ~a~
 
 *** Example
 #+BEGIN_SRC scala
@@ -75,29 +73,64 @@ val n3 = n1.append(n2)
 
 *** Referential Transparency
 
-A functional program is not a set of instructions for the computer. 
-
-It is a single referentially transparent expression.
-
-Running a program is just a series of reductions to a single value.
-
+- A functional program is not a set of instructions for the computer. 
+- It is a single referentially transparent expression.
+- Running a program is just a series of reductions to a single value.
 
 * Live Coding
+#+BEGIN_NOTES
+Since this is a combination of Elixir and Java meetups, with folks
+likely being able to read OO-style coding, and most everyone is likely
+to be able to at least decipher something like Ruby...
+#+END_NOTES
 
 ** Haskell
+#+BEGIN_NOTES
+Why Haskell? Because Haskell is the lingua franca of functional
+programming. It is the closest to the lambda calculus that acts as the
+theoretical underpinnings of FP.  So, let's take a look...
+
+Remember to ask questions!
+#+END_NOTES
 
 *** Function calls
 #+begin_src haskell
 -- type declaration
-inc :: Int -> Int
-^      ^      ^
-name   param  return    
+inc :: Integer -> Integer
+^      ^          ^
+name   param      return    
 
 -- expression declaration
 inc   x   =   x + 1
 ^     ^       ^
 name  param   expression (implicit return)
 
+#+end_src
+
+*** Multiple parameters
+#+begin_src haskell
+-- type declaration
+add :: Integer -> Integer -> Integer
+^      ^          ^          ^
+name   param      param      return
+
+-- expression declaration
+inc   x      y       =   x + y
+      ^      ^           ^
+name  param  param       expression
+
+#+end_src
+
+*** Calling functions
+#+begin_src haskell
+-- Calling with all known parameters
+x = add 2 3 -- x == 5
+
+-- Curried functions
+addTwo :: Integer -> Integer
+addTwo = add 2
+
+y = addTwo 3 -- y == 3
 #+end_src
 
 *** Lambdas
@@ -107,6 +140,32 @@ inc :: Int -> Int
 inc = \x -> x + 1
 #+end_src
 
+#+BEGIN_NOTES
+First, let's look at how to build a type
+
+data Bool = True | False
+
+And then define a quick function (note pattern matching)
+
+not :: Bool -> Bool
+not True = False
+not False = True
+
+even :: Integer -> Bool
+even n = mod n 2 == 0
+
+-- Return true if the second integer is divisible by the first integer
+divisibleBy :: Integer -> Integer -> Bool
+divisibleBy k n = mod n k == 0
+divisibleBy' k = \n -> mod n k == 0
+-- divisibleBy'' k = (== 0) . flip (mod)
+
+even' = divisibleBy 2
+
+-- Function composition
+-- :t (.)
+odd = not . even'
+#+END_NOTEs
 
 ** Higher-order functions
 
@@ -114,42 +173,27 @@ inc = \x -> x + 1
 - Values can be passed to or returned from functions
 - Ergo, functions can accept and return functions
 
-#+ATTR_REVEAL: :frag t
-Let's try it out!
-#+begin_notes
+#+BEGIN_NOTES
+-- Lifting
+and :: Pred a -> Pred a -> Pred a
+and p1 p2 = \a -> (p1 a) && (p2 a)
+or :: Pred a -> Pred a -> Pred a
+or p1 p2 = \a -> (p1 a) || (p2 a)
+-- Copy/paste is awful - let's try to abstract
+lift :: (Bool -> Bool -> Bool) -- f
+     -> Pred a -- b1
+     -> Pred a -- b2
+     -> Pred a -- result
+lift f b1 b2 = \a -> f (b1 a) (b2 a)
 
-#+end_notes
+and' :: Pred a -> Pred a -> Pred a
+and' = lift (&&)
 
-** Recursion 
+or' :: Pred a -> Pred a -> Pred a
+or' = lift (||)
 
-*** Loops
+#+END_NOTES
 
-- Traditional (C-Style) loops are not allowed.
-  - Variable modification is not allowed.
-
-So how can we loop? 
-#+begin_notes
-npower :: Integer -> Integer -> Integer
-power n k =
-  if (k <= 0)
-  then 1
-  else n * power n (k - 1)
-#+end_notes
-
-*** Tail Recursion
-
-- Primary problem with recursion - stack overflow!
-- How do we avoid blowing the stack? 
-#+begin_notes
-power' :: Integer -> Integer -> Integer
-power' n k = go 1 k
-  where go :: Integer -> Integer -> Integer
-        go accum pow =
-          if (pow <= 0)
-          then accum
-          else go (n * accum) (pow - 1)
-
-#+end_notes
 
 ** Data Structures
 
@@ -180,7 +224,7 @@ bigger_list = 8 : 7 : 6 : 5 : small_list
 - Let's look at summing a list of ~Integer~ values
 - MORE CODE!!
 
-#+begin_notes
+#+BEGIN_NOTES
 sumright :: [Integer] -> Integer
 sumright [] = 0
 sumright (x:xs) = x + sumright xs
@@ -220,7 +264,7 @@ reverse :: [a] -> [a]
 reverse = foldleft (flip (:)) []
 -- :t (:)       :: a -> [a] -> [a]
 -- :t flip (:)  :: [a] -> a -> [a]
-#+end_notes
+#+END_NOTES
 
 ** Error Handling
 
@@ -228,7 +272,7 @@ reverse = foldleft (flip (:)) []
 
 ~data Maybe a = Nothing | Just a~
 
-#+begin_notes
+#+BEGIN_NOTES
 headsafe :: [a] -> Maybe a
 headsafe [] = Nothing
 headsafe (x:xs) = Just x
@@ -236,13 +280,13 @@ headsafe (x:xs) = Just x
 foldMaybe :: b -> (a -> b) -> Maybe a -> b
 foldMaybe z _ Nothing  = z
 foldMaybe _ f (Just a) = f a
-#+end_notes
+#+END_NOTES
 
 *** Either
 
 ~data Either a b = Left a | Right b~
 
-#+begin_notes
+#+BEGIN_NOTES
 headsafe' :: [a] -> Either String a
 headsafe' [] = Left "Can't take head of an empty list"
 headsafe' (x:xs) = Right x
@@ -250,8 +294,21 @@ headsafe' (x:xs) = Right x
 foldEither :: (b -> c) -> (a -> c) -> Either a b -> c
 foldEither l _ (Left b)  = l b
 foldEither _ f (Right a) = f a
-#+end_notes
+#+END_NOTES
 
 ** Effects
 
-Not going to go too far into this one... 
+- Rather than executing the effects, create a data structure that
+  defines /how/ to execute the effects.
+- At the end of the world, do the dirty work. 
+- This is codified in Haskell using the ~IO~ type
+
+*** Live Code
+#+ATTR_REVEAL: :frag t
+Maybe next time
+
+* Resources
+- Haskell Programming from First Principles :: http://haskellbook.com
+- Functional Programming in Scala :: https://www.manning.com/books/functional-programming-in-scala
+
+* ?

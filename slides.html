@@ -7,30 +7,525 @@
 <style type="text/css">
 .underline { text-decoration: underline; }
 </style>
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.8.0/css/reveal.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.css"/>
 
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.8.0/css/theme/sky.css" id="theme"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/sky.css" id="theme"/>
 
-<link rel="stylesheet" href="http://cdn.jsdelivr.net/reveal.js/3.8.0/lib/css/zenburn.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/css/zenburn.css"/>
 <!-- If the query includes 'print-pdf', include the PDF print sheet -->
 <script>
     if( window.location.search.match( /print-pdf/gi ) ) {
         var link = document.createElement( 'link' );
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = 'http://cdn.jsdelivr.net/reveal.js/3.8.0/css/print/pdf.css';
+        link.href = 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/print/pdf.css';
         document.getElementsByTagName( 'head' )[0].appendChild( link );
     }
 </script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div class="reveal">
 <div class="slides">
 
+<section>
+<section id="slide-org7e502d0">
+<h2 id="org7e502d0">Introduction to Functional Programming</h2>
+
+</section>
+</section>
+<section>
+<section id="slide-org349ad87">
+<h2 id="org349ad87">Inspiration</h2>
+<p>
+I've stolen this flow before, and I'll do it again
+</p>
+
+<p>
+<a href="https://www.youtube.com/watch?v=aAtPi23nLcw">Runar Bjarnasson - Introduction to Functional Programming</a>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgdc17e6f">
+<h2 id="orgdc17e6f">Who am I?</h2>
+<ul>
+<li>Bill Carlson</li>
+<li>Senior Software Engineer @Banno</li>
+<li>I get paid to write purely functional programs</li>
+
+</ul>
+<aside class="notes">
+<p>
+for a few years now!
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgefcfd2d">
+<h2 id="orgefcfd2d">What is Functional Programming?</h2>
+<p class="fragment">
+Programming with functions
+</p>
+
+</section>
+<section id="slide-orgcea30e0">
+<h3 id="orgcea30e0">What is a function?</h3>
+<p class="fragment">
+A function <code>f :: A -&gt; B</code> maps <b>any</b> value from A to <b>exactly one</b> value in B
+</p>
+
+<p class="fragment">
+<i>And nothing else</i>
+</p>
+
+</section>
+<section id="slide-org61c958e">
+<h3 id="org61c958e">What does that mean?</h3>
+<dl>
+<dt>Totality</dt><dd>A function will return a single value for all values of <code>A</code>.</dd>
+<dt>Determinism</dt><dd>Every time you call a function with the same arguments, you will <i>always</i> get the same result.</dd>
+<dt>Purity</dt><dd>The output of the function is the <i>only</i> effect.</dd>
+
+</dl>
+
+
+</section>
+<section id="slide-org2f6ee72">
+<h3 id="org2f6ee72">What does <i>that</i> mean?</h3>
+<p>
+A function can not:
+</p>
+<ul>
+<li>Read/Write to disk</li>
+<li>Print to the console</li>
+<li>Query a database</li>
+<li>Throw an exception</li>
+<li>Check the system clock</li>
+<li>etc.</li>
+
+</ul>
+
+<p>
+But we'll touch on that later&#x2026;
+</p>
+
+</section>
+<section id="slide-orgae7a9f4">
+<h3 id="orgae7a9f4">Referential Tranparency</h3>
+<ul>
+<li>You can replace all occurrences of an expression with the result of that call without changing the program.</li>
+<li>A function <code>f(a)</code> is pure if it is referentially transparent for all referentially transparent values of <code>a</code></li>
+
+</ul>
+
+</section>
+<section id="slide-orgb95e665">
+<h4 id="orgb95e665">Example</h4>
+<div class="org-src-container">
+
+<pre><code class="scala" >val string = "some text"
+val e1 = string.reverse
+val e2 = string.reverse
+val e3 = e1 + e2
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="fragment"><code class="scala" >val buffer = new StringBuilder("some text")
+val n1 = buffer.reverse
+val n2 = buffer.reverse
+val n3 = n1.append(n2)
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgc721927">
+<h4 id="orgc721927">Referential Transparency</h4>
+<ul>
+<li>A functional program is not a set of instructions for the computer.</li>
+<li>It is a single referentially transparent expression.</li>
+<li>Running a program is just a series of reductions to a single value.</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org2ef7f09">
+<h2 id="org2ef7f09">Live Coding</h2>
+<aside class="notes">
+<p>
+Since this is a combination of Elixir and Java meetups, with folks
+likely being able to read OO-style coding, and most everyone is likely
+to be able to at least decipher something like Ruby&#x2026;
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgf556348">
+<h3 id="orgf556348">Haskell</h3>
+<aside class="notes">
+<p>
+Why Haskell? Because Haskell is the lingua franca of functional
+programming. It is the closest to the lambda calculus that acts as the
+theoretical underpinnings of FP.  So, let's take a look&#x2026;
+</p>
+
+<p>
+Remember to ask questions!
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org262c7c0">
+<h4 id="org262c7c0">Function calls</h4>
+<div class="org-src-container">
+
+<pre><code class="haskell" >-- type declaration
+inc :: Integer -> Integer
+^      ^          ^
+name   param      return
+
+-- expression declaration
+inc   x   =   x + 1
+^     ^       ^
+name  param   expression (implicit return)
+
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org58f68b2">
+<h4 id="org58f68b2">Multiple parameters</h4>
+<div class="org-src-container">
+
+<pre><code class="haskell" >-- type declaration
+add :: Integer -> Integer -> Integer
+^      ^          ^          ^
+name   param      param      return
+
+-- expression declaration
+inc   x      y       =   x + y
+      ^      ^           ^
+name  param  param       expression
+
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgfa95a8a">
+<h4 id="orgfa95a8a">Calling functions</h4>
+<div class="org-src-container">
+
+<pre><code class="haskell" >-- Calling with all known parameters
+x = add 2 3 -- x == 5
+
+-- Curried functions
+addTwo :: Integer -> Integer
+addTwo = add 2
+
+y = addTwo 3 -- y == 3
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgd4eb380">
+<h4 id="orgd4eb380">Lambdas</h4>
+<div class="org-src-container">
+
+<pre><code class="haskell" >inc :: Int -> Int
+
+inc = \x -> x + 1
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+First, let's look at how to build a type
+</p>
+
+<p>
+data Bool = True | False
+</p>
+
+<p>
+And then define a quick function (note pattern matching)
+</p>
+
+<p>
+not :: Bool -&gt; Bool
+not True = False
+not False = True
+</p>
+
+<p>
+even :: Integer -&gt; Bool
+even n = mod n 2 == 0
+</p>
+
+<p>
+&#x2013; Return true if the second integer is divisible by the first integer
+divisibleBy :: Integer -&gt; Integer -&gt; Bool
+divisibleBy k n = mod n k <code>= 0
+divisibleBy' k = \n -&gt; mod n k =</code> 0
+&#x2013; divisibleBy'' k = (== 0) . flip (mod)
+</p>
+
+<p>
+even' = divisibleBy 2
+</p>
+
+<p>
+&#x2013; Function composition
+&#x2013; :t (.)
+odd = not . even'
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgc3e51f3">
+<h3 id="orgc3e51f3">Higher-order functions</h3>
+<ul>
+<li>Functions are values</li>
+<li>Values can be passed to or returned from functions</li>
+<li>Ergo, functions can accept and return functions</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+&#x2013; Lifting
+and :: Pred a -&gt; Pred a -&gt; Pred a
+and p1 p2 = \a -&gt; (p1 a) &amp;&amp; (p2 a)
+or :: Pred a -&gt; Pred a -&gt; Pred a
+or p1 p2 = \a -&gt; (p1 a) || (p2 a)
+&#x2013; Copy/paste is awful - let's try to abstract
+lift :: (Bool -&gt; Bool -&gt; Bool) &#x2013; f
+     -&gt; Pred a &#x2013; b1
+     -&gt; Pred a &#x2013; b2
+     -&gt; Pred a &#x2013; result
+lift f b1 b2 = \a -&gt; f (b1 a) (b2 a)
+</p>
+
+<p>
+and' :: Pred a -&gt; Pred a -&gt; Pred a
+and' = lift (&amp;&amp;)
+</p>
+
+<p>
+or' :: Pred a -&gt; Pred a -&gt; Pred a
+or' = lift (||)
+</p>
+
+</aside>
+
+
+</section>
+<section id="slide-org44c2fb5">
+<h3 id="org44c2fb5">Data Structures</h3>
+<div class="outline-text-3" id="text-org44c2fb5">
+</div>
+</section>
+<section id="slide-orgfa95e72">
+<h4 id="orgfa95e72">List</h4>
+<div class="org-src-container">
+
+<pre><code class="haskell" >data List a = Nil | Cons a (List a)
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="fragment"><code class="haskell" >data [a] = [] | a : [a]
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org27b9e41">
+<h4 id="org27b9e41">List</h4>
+<ul>
+<li>Build a large list by prepending to a smaller list</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre><code class="haskell" >small_list = [4, 3, 2, 1]
+bigger_list = 8 : 7 : 6 : 5 : small_list
+</code></pre>
+</div>
+<ul>
+<li>This does not change the value of <code>small_list</code></li>
+<li>This <i>shares</i> the space used by <code>small_list</code></li>
+
+</ul>
+
+</section>
+<section id="slide-org82cc757">
+<h4 id="org82cc757">Reduction</h4>
+<ul>
+<li>Building lists is all well and good, but how can we get an actual value out of it?</li>
+<li>Let's look at summing a list of <code>Integer</code> values</li>
+<li>MORE CODE!!</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+sumright :: [Integer] -&gt; Integer
+sumright [] = 0
+sumright (x:xs) = x + sumright xs
+</p>
+
+<p>
+sumleft :: [Integer] -&gt; Integer
+sumleft xs = go xs 0
+  where
+    go :: [Integer] -&gt; Integer -&gt; Integer
+    go [] accum = accum
+    go (x:xs) accum = go xs (x + accum)
+</p>
+
+<p>
+productright :: [Integer] -&gt; Integer
+productright [] = 1
+productright (x:xs) = x * productright xs
+</p>
+
+<p>
+foldright :: (a -&gt; b -&gt; b)
+       -&gt; b
+       -&gt; [a]
+       -&gt; b
+foldright _ z []     = z
+foldright f z (x:xs) = f x (foldright f z xs)
+</p>
+
+<p>
+foldleft :: (b -&gt; a -&gt; b)
+       -&gt; b
+       -&gt; [a]
+       -&gt; b
+foldleft f z xs = go xs z
+  where go [] accum = accum
+        go (y: ys) accum = go ys (f accum y)
+</p>
+
+<p>
+sumright' :: [Integer] -&gt; Integer
+sumright' = foldright (+) 0
+</p>
+
+<p>
+productright' = foldright (*) 1
+</p>
+
+<p>
+reverse :: [a] -&gt; [a]
+reverse = foldleft (flip (:)) []
+&#x2013; :t (:)       :: a -&gt; [a] -&gt; [a]
+&#x2013; :t flip (:)  :: [a] -&gt; a -&gt; [a]
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org002583a">
+<h3 id="org002583a">Error Handling</h3>
+<div class="outline-text-3" id="text-org002583a">
+</div>
+</section>
+<section id="slide-orgc02fa13">
+<h4 id="orgc02fa13">Maybe</h4>
+<p>
+<code>data Maybe a = Nothing | Just a</code>
+</p>
+
+<aside class="notes">
+<p>
+headsafe :: [a] -&gt; Maybe a
+headsafe [] = Nothing
+headsafe (x:xs) = Just x
+</p>
+
+<p>
+foldMaybe :: b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b
+foldMaybe z _ Nothing  = z
+foldMaybe _ f (Just a) = f a
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org5825edc">
+<h4 id="org5825edc">Either</h4>
+<p>
+<code>data Either a b = Left a | Right b</code>
+</p>
+
+<aside class="notes">
+<p>
+headsafe' :: [a] -&gt; Either String a
+headsafe' [] = Left "Can't take head of an empty list"
+headsafe' (x:xs) = Right x
+</p>
+
+<p>
+foldEither :: (b -&gt; c) -&gt; (a -&gt; c) -&gt; Either a b -&gt; c
+foldEither l _ (Left b)  = l b
+foldEither _ f (Right a) = f a
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgca9dae3">
+<h3 id="orgca9dae3">Effects</h3>
+<ul>
+<li>Rather than executing the effects, create a data structure that
+defines <i>how</i> to execute the effects.</li>
+<li>At the end of the world, do the dirty work.</li>
+<li>This is codified in Haskell using the <code>IO</code> type</li>
+
+</ul>
+
+</section>
+<section id="slide-org2ce039c">
+<h4 id="org2ce039c">Live Code</h4>
+<p class="fragment">
+Maybe next time
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgdcd22c0">
+<h2 id="orgdcd22c0">Resources</h2>
+<dl>
+<dt>Haskell Programming from First Principles</dt><dd><a href="http://haskellbook.com">http://haskellbook.com</a></dd>
+<dt>Functional Programming in Scala</dt><dd><a href="https://www.manning.com/books/functional-programming-in-scala">https://www.manning.com/books/functional-programming-in-scala</a></dd>
+
+</dl>
+
+</section>
+</section>
+<section>
+<section id="slide-orgf5ef123">
+<h2 id="orgf5ef123">?</h2>
+</section>
+</section>
 </div>
 </div>
-<script src="http://cdn.jsdelivr.net/reveal.js/3.8.0/lib/js/head.min.js"></script>
-<script src="http://cdn.jsdelivr.net/reveal.js/3.8.0/js/reveal.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/js/head.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.js"></script>
 
 <script>
 // Full list of configuration options available here:
@@ -57,8 +552,8 @@ multiplex: {
 
 // Optional libraries used to extend on reveal.js
 dependencies: [
- { src: 'http://cdn.jsdelivr.net/reveal.js/3.8.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
- { src: 'http://cdn.jsdelivr.net/reveal.js/3.8.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+ { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
 });
 </script>
 </body>
