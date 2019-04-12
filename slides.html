@@ -29,14 +29,14 @@
 <div class="slides">
 
 <section>
-<section id="slide-org46c843e">
-<h2 id="org46c843e">Introduction to Functional Programming</h2>
+<section id="slide-orgbf7de81">
+<h2 id="orgbf7de81">Introduction to Functional Programming</h2>
 
 </section>
 </section>
 <section>
-<section id="slide-orgd478ae8">
-<h2 id="orgd478ae8">Inspiration</h2>
+<section id="slide-org94b495a">
+<h2 id="org94b495a">Inspiration</h2>
 <p>
 I've stolen this presentation before, and I'll do it again
 </p>
@@ -48,12 +48,13 @@ I've stolen this presentation before, and I'll do it again
 </section>
 </section>
 <section>
-<section id="slide-orgc0d9998">
-<h2 id="orgc0d9998">Who am I?</h2>
+<section id="slide-org6590ef6">
+<h2 id="org6590ef6">Who am I?</h2>
 <ul>
 <li>Bill Carlson</li>
 <li>Senior Software Engineer @ Banno</li>
 <li>I get paid to write purely functional programs</li>
+<li>Proud graduate of the National Champion University of Virginia</li>
 
 </ul>
 <aside class="notes">
@@ -66,15 +67,15 @@ for a few years now!
 </section>
 </section>
 <section>
-<section id="slide-org8abf551">
-<h2 id="org8abf551">What is Functional Programming?</h2>
+<section id="slide-orgb91dcde">
+<h2 id="orgb91dcde">What is Functional Programming?</h2>
 <p class="fragment">
 Programming with functions
 </p>
 
 </section>
-<section id="slide-org88d8219">
-<h3 id="org88d8219">What is a function?</h3>
+<section id="slide-org91d32a7">
+<h3 id="org91d32a7">What is a function?</h3>
 <p class="fragment">
 A function <code>f :: A -&gt; B</code> maps <b>any</b> value from A to <b>exactly one</b> value in B
 </p>
@@ -84,8 +85,8 @@ A function <code>f :: A -&gt; B</code> maps <b>any</b> value from A to <b>exactl
 </p>
 
 </section>
-<section id="slide-orgbf559a2">
-<h3 id="orgbf559a2">What does that mean?</h3>
+<section id="slide-orgdcf25ce">
+<h3 id="orgdcf25ce">What does that mean?</h3>
 <dl>
 <dt>Totality</dt><dd>A function will return a single value for all values of <code>A</code>.</dd>
 <dt>Determinism</dt><dd>Every time you call a function with the same arguments, you will <i>always</i> get the same result.</dd>
@@ -95,8 +96,8 @@ A function <code>f :: A -&gt; B</code> maps <b>any</b> value from A to <b>exactl
 
 
 </section>
-<section id="slide-org6887b4f">
-<h3 id="org6887b4f">What does <i>that</i> mean?</h3>
+<section id="slide-org075eeba">
+<h3 id="org075eeba">What does <i>that</i> mean?</h3>
 <p>
 A function can not:
 </p>
@@ -115,8 +116,8 @@ But we'll touch on that later&#x2026;
 </p>
 
 </section>
-<section id="slide-orge38ee56">
-<h3 id="orge38ee56">Referential Tranparency</h3>
+<section id="slide-org4318b62">
+<h3 id="org4318b62">Referential Tranparency</h3>
 <ul>
 <li>You can replace all occurrences of an expression with the result of that call without changing the program.</li>
 <li>A function <code>f(a)</code> is pure if it is referentially transparent for all referentially transparent values of <code>a</code></li>
@@ -124,8 +125,8 @@ But we'll touch on that later&#x2026;
 </ul>
 
 </section>
-<section id="slide-org30018d7">
-<h4 id="org30018d7">Example</h4>
+<section id="slide-org346d2ba">
+<h4 id="org346d2ba">Example</h4>
 <div class="org-src-container">
 
 <pre><code class="scala" >val string = "some text"
@@ -145,8 +146,8 @@ val n3 = n1.append(n2)
 </div>
 
 </section>
-<section id="slide-org5a93444">
-<h4 id="org5a93444">Referential Transparency</h4>
+<section id="slide-orgeb308a3">
+<h4 id="orgeb308a3">Referential Transparency</h4>
 <ul>
 <li>A functional program is not a set of instructions for the computer.</li>
 <li>It is a single referentially transparent expression.</li>
@@ -157,8 +158,8 @@ val n3 = n1.append(n2)
 </section>
 </section>
 <section>
-<section id="slide-org2ef03dd">
-<h2 id="org2ef03dd">Live Coding</h2>
+<section id="slide-orgb3ab549">
+<h2 id="orgb3ab549">Live Coding</h2>
 <aside class="notes">
 <p>
 Since this is a combination of Elixir and Java meetups, with folks
@@ -169,8 +170,8 @@ to be able to at least decipher something like Ruby&#x2026;
 </aside>
 
 </section>
-<section id="slide-org45974b8">
-<h3 id="org45974b8">Haskell</h3>
+<section id="slide-org6e3bf88">
+<h3 id="org6e3bf88">Haskell</h3>
 <aside class="notes">
 <p>
 Why Haskell? Because Haskell is the lingua franca of functional
@@ -185,8 +186,8 @@ Remember to ask questions!
 </aside>
 
 </section>
-<section id="slide-orgaf3f9ec">
-<h4 id="orgaf3f9ec">Function calls</h4>
+<section id="slide-org6daecf8">
+<h4 id="org6daecf8">Function calls</h4>
 <div class="org-src-container">
 
 <pre><code class="haskell" >-- type declaration
@@ -203,8 +204,8 @@ name  param   expression (implicit return)
 </div>
 
 </section>
-<section id="slide-org157ccbb">
-<h4 id="org157ccbb">Multiple parameters</h4>
+<section id="slide-org7c0ad5c">
+<h4 id="org7c0ad5c">Multiple parameters</h4>
 <div class="org-src-container">
 
 <pre><code class="haskell" >-- type declaration
@@ -221,8 +222,8 @@ name  param  param       expression
 </div>
 
 </section>
-<section id="slide-org3eb6017">
-<h4 id="org3eb6017">Calling functions</h4>
+<section id="slide-orgd443785">
+<h4 id="orgd443785">Calling functions</h4>
 <div class="org-src-container">
 
 <pre><code class="haskell" >-- Calling with all known parameters
@@ -237,8 +238,8 @@ y = addTwo 3 -- y == 3
 </div>
 
 </section>
-<section id="slide-org2528604">
-<h4 id="org2528604">Lambdas</h4>
+<section id="slide-orga7cae91">
+<h4 id="orga7cae91">Lambdas</h4>
 <div class="org-src-container">
 
 <pre><code class="haskell" >inc :: Int -> Int
@@ -281,19 +282,17 @@ divisibleBy' k = \n -&gt; mod n k =</code> 0
 
 <p>
 even' = divisibleBy 2
-</p>
-
-<p>
-&#x2013; Function composition
+&#x2013; Function composition: (f ∘ g)(x) == f(g(x))
+&#x2013; f :: b -&gt; c ; g :: a -&gt; b ; (f ∘ g) :: a -&gt; c
 &#x2013; :t (.)
-odd = not . even'
+odd   = not . even'
 </p>
 
 </aside>
 
 </section>
-<section id="slide-orgd94a667">
-<h4 id="orgd94a667">Higher-order functions</h4>
+<section id="slide-orgfe6b6c1">
+<h4 id="orgfe6b6c1">Higher-order functions</h4>
 <ul>
 <li>Functions are values</li>
 <li>Values can be passed to or returned from functions</li>
@@ -331,13 +330,13 @@ or' = lift (||)
 </section>
 </section>
 <section>
-<section id="slide-orgd83bbf0">
-<h2 id="orgd83bbf0">Data Structures</h2>
-<div class="outline-text-2" id="text-orgd83bbf0">
+<section id="slide-orgec42aeb">
+<h2 id="orgec42aeb">Data Structures</h2>
+<div class="outline-text-2" id="text-orgec42aeb">
 </div>
 </section>
-<section id="slide-org84e38bb">
-<h4 id="org84e38bb">List</h4>
+<section id="slide-orgde71cb7">
+<h4 id="orgde71cb7">List</h4>
 <div class="org-src-container">
 
 <pre><code class="haskell" >data List a = Nil | Cons a (List a)
@@ -351,8 +350,8 @@ or' = lift (||)
 </div>
 
 </section>
-<section id="slide-org0875a60">
-<h4 id="org0875a60">List</h4>
+<section id="slide-org3ede55c">
+<h4 id="org3ede55c">List</h4>
 <ul>
 <li>Build a large list by prepending to a smaller list</li>
 
@@ -370,8 +369,8 @@ bigger_list = 8 : 7 : 6 : 5 : small_list
 </ul>
 
 </section>
-<section id="slide-org569f596">
-<h4 id="org569f596">Reduction</h4>
+<section id="slide-org9d9ae6f">
+<h4 id="org9d9ae6f">Reduction</h4>
 <ul>
 <li>Building lists is all well and good, but how can we get an actual value out of it?</li>
 <li>Let's look at summing a list of <code>Integer</code> values</li>
@@ -381,14 +380,59 @@ bigger_list = 8 : 7 : 6 : 5 : small_list
 
 <aside class="notes">
 <p>
-sumright :: [Integer] -&gt; Integer
-sumright [] = 0
-sumright (x:xs) = x + sumright xs
+&#x2013;
+&#x2013; Lists
+&#x2013;
+sum :: [Integer] -&gt; Integer
+sum [] = 0
+sum (x:xs) = x + sum xs
 </p>
 
 <p>
-sumleft :: [Integer] -&gt; Integer
-sumleft xs = go xs 0
+product :: [Integer] -&gt; Integer
+product [] = 1
+product (x:xs) = x * product xs
+</p>
+
+<p>
+foldright :: (a -&gt; b -&gt; b)
+          -&gt; b
+          -&gt; [a]
+          -&gt; b
+foldright _ z []     = z
+foldright f z (x:xs) = f x (foldright f z xs)
+</p>
+
+<p>
+sumr' :: [Integer] -&gt; Integer
+sumr' = foldright (+) 0
+</p>
+
+<p>
+&#x2013; foldright (<del>) 0 [1, 2, 3, 4]
+&#x2013; 1 + (foldright (</del>) [2, 3, 4])
+&#x2013; 1 + 2 + (foldright (<del>) [3, 4])
+&#x2013; 1 + 2 + 3 + (foldright (</del>) [4])
+&#x2013; 1 + 2 + 3 + 4 + (foldright (+) [])
+&#x2013; 1 + 2 + 3 + 4 + 0
+&#x2013; 1 + 2 + 3 + 4
+&#x2013; 1 + 2 + 3
+&#x2013; 1 + 2
+&#x2013; 1
+</p>
+
+<p>
+&#x2013; (1 + (2 + (3 + (4 + 0))))
+</p>
+
+<p>
+product' :: [Integer] -&gt; Integer
+product' = foldright (*) 1
+</p>
+
+<p>
+suml :: [Integer] -&gt; Integer
+suml xs = go xs 0
   where
     go :: [Integer] -&gt; Integer -&gt; Integer
     go [] accum = accum
@@ -396,38 +440,30 @@ sumleft xs = go xs 0
 </p>
 
 <p>
-productright :: [Integer] -&gt; Integer
-productright [] = 1
-productright (x:xs) = x * productright xs
-</p>
-
-<p>
-foldright :: (a -&gt; b -&gt; b)
-       -&gt; b
-       -&gt; [a]
-       -&gt; b
-foldright _ z []     = z
-foldright f z (x:xs) = f x (foldright f z xs)
-</p>
-
-<p>
 foldleft :: (b -&gt; a -&gt; b)
-       -&gt; b
-       -&gt; [a]
-       -&gt; b
+         -&gt; b
+         -&gt; [a]
+         -&gt; b
 foldleft f z xs = go xs z
   where go [] accum = accum
-        go (y: ys) accum = go ys (f accum y)
+        go (y:ys) accum = go ys (f accum y)
+</p>
+
+
+<p>
+&#x2013; foldleft (+) 0 [1, 2, 3, 4]
+&#x2013; go [1, 2, 3, 4] 0
+&#x2013; go [2, 3, 4] 1
+&#x2013; go [3, 4] 3
+&#x2013; go [4] 6
+&#x2013; go [] 10
+&#x2013; 10
 </p>
 
 <p>
-sumright' :: [Integer] -&gt; Integer
-sumright' = foldright (+) 0
+&#x2013; ((((0 + 1) + 2) + 3) + 4)
 </p>
 
-<p>
-productright' = foldright (*) 1
-</p>
 
 <p>
 reverse :: [a] -&gt; [a]
@@ -441,13 +477,13 @@ reverse = foldleft (flip (:)) []
 </section>
 </section>
 <section>
-<section id="slide-org56732f1">
-<h2 id="org56732f1">Error Handling</h2>
-<div class="outline-text-2" id="text-org56732f1">
+<section id="slide-orgf3516e4">
+<h2 id="orgf3516e4">Error Handling</h2>
+<div class="outline-text-2" id="text-orgf3516e4">
 </div>
 </section>
-<section id="slide-org4b6f855">
-<h4 id="org4b6f855">Maybe</h4>
+<section id="slide-org7a6ebdb">
+<h4 id="org7a6ebdb">Maybe</h4>
 <p>
 <code>data Maybe a = Nothing | Just a</code>
 </p>
@@ -468,8 +504,8 @@ foldMaybe _ f (Just a) = f a
 </aside>
 
 </section>
-<section id="slide-orgd32bfa1">
-<h4 id="orgd32bfa1">Either</h4>
+<section id="slide-org73feaef">
+<h4 id="org73feaef">Either</h4>
 <p>
 <code>data Either a b = Left a | Right b</code>
 </p>
@@ -482,9 +518,9 @@ headsafe' (x:xs) = Right x
 </p>
 
 <p>
-foldEither :: (b -&gt; c) -&gt; (a -&gt; c) -&gt; Either a b -&gt; c
-foldEither l _ (Left b)  = l b
-foldEither _ f (Right a) = f a
+foldEither :: (a -&gt; c) -&gt; (b -&gt; c) -&gt; Either a b -&gt; c
+foldEither l _ (Left a)  = l a
+foldEither _ f (Right b) = f b
 </p>
 
 </aside>
@@ -492,8 +528,8 @@ foldEither _ f (Right a) = f a
 </section>
 </section>
 <section>
-<section id="slide-org1de66a5">
-<h2 id="org1de66a5">Effects</h2>
+<section id="slide-org5db3410">
+<h2 id="org5db3410">Effects</h2>
 <ul>
 <li>Rather than executing the effects, create a data structure that
 defines <i>how</i> to execute the effects.</li>
@@ -503,8 +539,8 @@ defines <i>how</i> to execute the effects.</li>
 </ul>
 
 </section>
-<section id="slide-orgd79b7af">
-<h4 id="orgd79b7af">Live Code</h4>
+<section id="slide-org9f3b2ef">
+<h4 id="org9f3b2ef">Live Code</h4>
 <p class="fragment">
 Maybe next time
 </p>
@@ -512,8 +548,8 @@ Maybe next time
 </section>
 </section>
 <section>
-<section id="slide-orgab540ae">
-<h2 id="orgab540ae">Summary</h2>
+<section id="slide-org11b3194">
+<h2 id="org11b3194">Summary</h2>
 <ul>
 <li>A program is a referentially transparent expression
 <ul>
@@ -529,8 +565,8 @@ Maybe next time
 </section>
 </section>
 <section>
-<section id="slide-org65d384c">
-<h2 id="org65d384c">Resources</h2>
+<section id="slide-org291537f">
+<h2 id="org291537f">Resources</h2>
 <dl>
 <dt>Haskell Programming from First Principles</dt><dd><a href="http://haskellbook.com">http://haskellbook.com</a></dd>
 <dt>Functional Programming in Scala</dt><dd><a href="https://www.manning.com/books/functional-programming-in-scala">https://www.manning.com/books/functional-programming-in-scala</a></dd>
@@ -540,13 +576,13 @@ Maybe next time
 </section>
 </section>
 <section>
-<section id="slide-org550a795">
-<h2 id="org550a795">?</h2>
+<section id="slide-orgaf33cf5">
+<h2 id="orgaf33cf5">?</h2>
 </section>
 </section>
 <section>
-<section id="slide-orgc011bc5">
-<h2 id="orgc011bc5">Thank you</h2>
+<section id="slide-orgb631768">
+<h2 id="orgb631768">Thank you</h2>
 </section>
 </section>
 </div>
